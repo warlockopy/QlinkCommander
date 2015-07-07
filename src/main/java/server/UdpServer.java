@@ -66,7 +66,7 @@ public class UdpServer extends Thread {
 					sock.send (sendPacket);
 					
 					idSet.add(mobileId);
-					System.out.println ("Command sent to mobile " + mobileId + ".   Count = " + idSet.size());
+					System.out.println ("Command " + commandString + "sent to mobile " + mobileId + ".\nCount = " + idSet.size());
 					System.out.println ("---------------------------------");
 				}
 				
