@@ -28,7 +28,7 @@ public class UdpServer extends Thread {
 		TreeSet <String> idSet = new TreeSet ();
 		
 		//Enviar este comando una vez a cada equipo GMT100 que se reporte
-		final String commandString = "AT+GTEPS=gmt100,0,250,250,0,0,0,0,0,0,1,1,,,FFFF$";
+		final String commandString = "AT+GTEPS=gmt100,1,250,32000,0,0,0,0,0,0,1,1,,,FFFF$";
 		
 		try{
 			sock = new DatagramSocket (localPortNumber);
