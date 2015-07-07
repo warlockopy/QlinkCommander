@@ -27,7 +27,7 @@ public class UdpServer extends Thread {
 		DatagramSocket sock = null;
 		TreeSet <String> idSet = new TreeSet ();
 		
-		//Enviar este comando una vez a cada equipo GV55 que se reporte
+		//Enviar este comando una vez a cada equipo GMT100 que se reporte
 		final String commandString = "AT+GTEPS=gmt100,0,250,250,0,0,0,0,0,0,1,1,,,FFFF$";
 		
 		try{
@@ -46,7 +46,7 @@ public class UdpServer extends Thread {
 				Tokenizer tok = new Tokenizer (incomingMessage);
 				String messageType = tok.nextToken();
 				String protocolVersion = tok.nextToken();
-				boolean isGV55 = protocolVersion.startsWith("0F");
+				boolean isGV55 = protocolVersion.startsWith("08"); //GMT100
 				String mobileId = getMobileIdFrom (incomingMessage);
 				InetAddress ipAddress = incoming.getAddress();
 				int port = incoming.getPort();
