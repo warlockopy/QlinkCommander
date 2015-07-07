@@ -19,7 +19,7 @@
   			<configuration>
   				<archive>
   					<manifest>
-  						<mainClass>mysql2websrvc.helloworld</mainClass>
+  						<mainClass>packetmain.Main</mainClass>
   					</manifest>
   				</archive>
   				<descriptorRefs>
