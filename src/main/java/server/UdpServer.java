@@ -73,6 +73,22 @@ public class UdpServer extends Thread {
 					System.out.println ("---------------------------------");
 				}
 				
+				if (isGMT100 && !idSet.contains(mobileId)){
+					String commandString = commandGMT100;
+					Command command = new Command (commandString, mobileId);
+					
+					DatagramPacket sendPacket;
+					byte [] sendData = command.getMessage().getBytes ();
+					sendPacket = new DatagramPacket (sendData, sendData.length, ipAddress, port);
+					sock.send (sendPacket);
+					
+					idSet.add(mobileId);
+					System.out.println ("Command " + commandString + "sent to mobile " + mobileId + ".\nCount = " + idSet.size());
+					System.out.println ("---------------------------------");
+				}
+				
+				
+				
 				/*
 				ArrayList <Command> commandsToSend = queue.extractCommandsWithId(mobileId);
 				
