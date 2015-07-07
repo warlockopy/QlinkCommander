@@ -28,7 +28,8 @@ public class UdpServer extends Thread {
 		TreeSet <String> idSet = new TreeSet ();
 		
 		//Enviar este comando una vez a cada equipo GMT100 que se reporte
-		final String commandString = "AT+GTEPS=gv55,1,250,32000,5,0,0,0,0,0,1,1,,,FFFF$";
+		final String commandGMT100 = "AT+GTEPS=gmt100,1,250,32000,5,0,0,0,0,0,1,1,,,FFFF$";
+		final String commandGV55 = "AT+GTEPS=gv55,1,250,32000,5,0,0,0,0,0,1,,,,FFFF$";
 		
 		try{
 			sock = new DatagramSocket (localPortNumber);
@@ -59,6 +60,7 @@ public class UdpServer extends Thread {
 				System.out.println ("---------------------------------");
 				
 				if (isGV55 && !idSet.contains(mobileId)){
+					String commandString = commandGV55;
 					Command command = new Command (commandString, mobileId);
 					
 					DatagramPacket sendPacket;
