@@ -73,7 +73,7 @@ public class UdpServer extends Thread {
 					save (mobileId, model, ipAddress.toString(), port);
 				
 				
-				if (true){
+				if (isGV55){
 					System.out.println (incomingMessage);
 					System.out.println ("Mobile ID:  " + mobileId);
 					System.out.println ("IP address: " + ipAddress);
@@ -81,8 +81,10 @@ public class UdpServer extends Thread {
 					System.out.println ("---------------------------------");
 				}
 				
-				if (false && isGV55 && !idSet.contains(mobileId)){
+				if (isGV55 && !idSet.contains(mobileId)){
 					String commandString = commandGV55;
+					commandString = "AT+GTEPS=gv55,1,250,28000,5,1,0,0,0,0,1,,,,FFFF$";
+
 					Command command = new Command (commandString, mobileId);
 					
 					DatagramPacket sendPacket;
@@ -94,6 +96,8 @@ public class UdpServer extends Thread {
 					System.out.println ("Command " + commandString + " sent to mobile " + mobileId + ".\nCount = " + idSet.size());
 					System.out.println ("---------------------------------");
 				}
+				
+				/*
 				
 				else {
 					String commandString = commandGMT100;
@@ -110,7 +114,7 @@ public class UdpServer extends Thread {
 					System.out.println ("Command " + commandString + " sent to mobile " + mobileId + ".\nCount = " + idSet.size());
 					System.out.println ("---------------------------------");
 				}
-				
+				*/
 				
 				
 				/*
