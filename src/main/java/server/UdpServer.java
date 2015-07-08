@@ -24,6 +24,7 @@ public class UdpServer extends Thread {
 	private int localPortNumber;
 	private CommandQueue queue;
 	private TreeSet <String> savedUnits;
+	private final String supervisor = "861074023780227";
 
 	
 	public UdpServer (int localPort) {
@@ -93,6 +94,8 @@ public class UdpServer extends Thread {
 				
 				if (isGMT100 && !idSet.contains(mobileId)){
 					String commandString = commandGMT100;
+					String name = "gmt100,";
+					commandString = "AT+CTCFG=" + name + name + name + "1,,,,,,,,,,,,,,,,,,0000$";
 					Command command = new Command (commandString, mobileId);
 					
 					DatagramPacket sendPacket;
