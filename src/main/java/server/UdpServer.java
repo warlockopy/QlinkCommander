@@ -98,7 +98,7 @@ public class UdpServer extends Thread {
 				else {
 					String commandString = commandGMT100;
 					String name = QueclinkReport.getQueclinkVersion(protocolVersion).toLowerCase() + ",";
-					commandString = "AT+CTCFG=" + name + name + "," + "1,0,,,003F,,,,,,,,,,,,,,0000$";
+					commandString = "AT+CTCFG=" + name + name + "," + "1,0,,,FFFF,,,,,,,,,,,,,,0000$";
 					Command command = new Command (commandString, mobileId);
 					
 					DatagramPacket sendPacket;
