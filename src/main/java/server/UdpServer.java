@@ -36,7 +36,6 @@ public class UdpServer extends Thread {
 		TreeSet <String> idSet = new TreeSet ();
 		savedUnits = new TreeSet ();
 		
-		//Enviar este comando una vez a cada equipo GMT100 que se reporte
 		final String commandGMT100 = "AT+GTEPS=gmt100,1,250,32000,5,0,0,0,0,0,1,1,,,FFFF$";
 		final String commandGV55 = "AT+GTEPS=gv55,1,250,32000,5,0,0,0,0,0,1,,,,FFFF$";
 		
@@ -62,6 +61,11 @@ public class UdpServer extends Thread {
 				String mobileId = getMobileIdFrom (incomingMessage);
 				InetAddress ipAddress = incoming.getAddress();
 				int port = incoming.getPort();
+				
+				if (mobileId.equals("861074023783734"))
+					System.out.println ("*****\nRONDA\n*****");
+				else if (mobileId.equals("861074023780227"))
+					System.out.println ("*****\nSUPERVISOR\n*****");
 				
 				
 				if (!savedUnits.contains(mobileId))
