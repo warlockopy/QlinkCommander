@@ -131,7 +131,7 @@ public class UdpServer extends Thread {
 	private void save (String mobileId, String model, String ipAddress, int port){
 		DateFormat format = new SimpleDateFormat ("yyyy_MM_dd");
 		String dateString = format.format (new Date ());
-		String dir = "target/EQUIPOS";
+		String dir = "EQUIPOS";
 		String fileName = "Reportes" + ".txt";
 		
 		File directory = new File (dir);
