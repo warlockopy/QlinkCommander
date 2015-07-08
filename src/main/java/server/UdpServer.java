@@ -1,14 +1,21 @@
 package server;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.TreeSet;
 
 import commands.Command;
 import commands.CommandQueue;
+import utilities.QueclinkReport;
 import utilities.Tokenizer;
 
 public class UdpServer extends Thread {
@@ -16,6 +23,7 @@ public class UdpServer extends Thread {
 	static final int bufferSize = 65536;
 	private int localPortNumber;
 	private CommandQueue queue;
+	private TreeSet <String> savedUnits;
 
 	
 	public UdpServer (int localPort) {
@@ -26,6 +34,7 @@ public class UdpServer extends Thread {
 	public void run (){
 		DatagramSocket sock = null;
 		TreeSet <String> idSet = new TreeSet ();
+		savedUnits = new TreeSet ();
 		
 		//Enviar este comando una vez a cada equipo GMT100 que se reporte
 		final String commandGMT100 = "AT+GTEPS=gmt100,1,250,32000,5,0,0,0,0,0,1,1,,,FFFF$";
@@ -47,11 +56,16 @@ public class UdpServer extends Thread {
 				Tokenizer tok = new Tokenizer (incomingMessage);
 				String messageType = tok.nextToken();
 				String protocolVersion = tok.nextToken();
-				boolean isGMT100 = protocolVersion.startsWith("08"); //GMT100
-				boolean isGV55 = protocolVersion.startsWith("0F"); //GV55
+				String model = QueclinkReport.getQueclinkVersion(protocolVersion);
+				boolean isGMT100 = model.equals("GMT100");
+				boolean isGV55 = model.equals("GV55");
 				String mobileId = getMobileIdFrom (incomingMessage);
 				InetAddress ipAddress = incoming.getAddress();
 				int port = incoming.getPort();
+				
+				
+				if (!savedUnits.contains(mobileId))
+					save (mobileId, model, ipAddress.toString(), port);
 				
 				System.out.println (incomingMessage);
 				System.out.println ("Mobile ID:  " + mobileId);
@@ -69,7 +83,7 @@ public class UdpServer extends Thread {
 					sock.send (sendPacket);
 					
 					idSet.add(mobileId);
-					System.out.println ("Command " + commandString + "sent to mobile " + mobileId + ".\nCount = " + idSet.size());
+					System.out.println ("Command " + commandString + " sent to mobile " + mobileId + ".\nCount = " + idSet.size());
 					System.out.println ("---------------------------------");
 				}
 				
@@ -83,7 +97,7 @@ public class UdpServer extends Thread {
 					sock.send (sendPacket);
 					
 					idSet.add(mobileId);
-					System.out.println ("Command " + commandString + "sent to mobile " + mobileId + ".\nCount = " + idSet.size());
+					System.out.println ("Command " + commandString + " sent to mobile " + mobileId + ".\nCount = " + idSet.size());
 					System.out.println ("---------------------------------");
 				}
 				
@@ -107,6 +121,41 @@ public class UdpServer extends Thread {
 		}
 		catch (IOException e){
 			System.err.println("IOException " + e);
+		}
+	}
+	
+	private void save (String mobileId, String model, String ipAddress, int port){
+		DateFormat format = new SimpleDateFormat ("yyyy_MM_dd");
+		String dateString = format.format (new Date ());
+		String dir = "target/EQUIPOS";
+		String fileName = "Reportes" + ".txt";
+		
+		File directory = new File (dir);
+		String path = directory.getAbsolutePath() + "/" + fileName;
+		
+		if (!directory.exists())
+			if (directory.mkdir() == false)
+				System.out.println ("Error. No se pudo crear el directorio " + directory.getAbsolutePath());
+		
+		
+		try {
+			FileWriter fWriter = new FileWriter (dir + "/" + fileName, true);
+			BufferedWriter writer = new BufferedWriter (fWriter);
+			
+			writer.write("Unit id:    " + mobileId + "\n");
+			writer.write("Model:      " + model + "\n");
+			writer.write("IP address: " + ipAddress.substring(1) + "\n");
+			writer.write("Port:       " + port + "\n");
+			writer.write("Time:       " + new Date () + "\n");
+			writer.write("------------------------------------------------\n");
+			
+			savedUnits.add(mobileId);
+			
+			writer.close ();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
