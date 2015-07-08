@@ -66,19 +66,22 @@ public class UdpServer extends Thread {
 				if (mobileId.equals("861074023783734"))
 					System.out.println ("*****\nRONDA\n*****");
 				else if (mobileId.equals("861074023780227"))
-					System.out.println ("*****\nSUPERVISOR\n*****");
+					System.out.println ("**********\nSUPERVISOR\n**********");
 				
 				
 				if (!savedUnits.contains(mobileId))
 					save (mobileId, model, ipAddress.toString(), port);
 				
-				System.out.println (incomingMessage);
-				System.out.println ("Mobile ID:  " + mobileId);
-				System.out.println ("IP address: " + ipAddress);
-				System.out.println ("Port:       " + port);
-				System.out.println ("---------------------------------");
 				
-				if (isGV55 && !idSet.contains(mobileId)){
+				if (messageType.startsWith ("+ACK")){
+					System.out.println (incomingMessage);
+					System.out.println ("Mobile ID:  " + mobileId);
+					System.out.println ("IP address: " + ipAddress);
+					System.out.println ("Port:       " + port);
+					System.out.println ("---------------------------------");
+				}
+				
+				if (false && isGV55 && !idSet.contains(mobileId)){
 					String commandString = commandGV55;
 					Command command = new Command (commandString, mobileId);
 					
@@ -92,9 +95,9 @@ public class UdpServer extends Thread {
 					System.out.println ("---------------------------------");
 				}
 				
-				if (isGMT100 && !idSet.contains(mobileId)){
+				else {
 					String commandString = commandGMT100;
-					String name = "gmt100,";
+					String name = QueclinkReport.getQueclinkVersion(protocolVersion).toLowerCase() + ",";
 					commandString = "AT+CTCFG=" + name + name + name + "1,,,,,,,,,,,,,,,,,,0000$";
 					Command command = new Command (commandString, mobileId);
 					
