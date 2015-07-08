@@ -83,7 +83,7 @@ public class UdpServer extends Thread {
 				
 				if (isGMT100 && !idSet.contains(mobileId)){
 					String commandString = commandGV55;
-					commandString = "AT+GTCFG=gmt100,,,1,0,0,0,7F,0,,1FFFF,,0,0,300,0,,0,0,,,FFFF$";
+					commandString = "AT+GTCFG=gmt100,,gmt100,1,0,0,0,7F,0,,1FFFF,,0,0,300,0,,0,0,,,FFFF$";
 
 					Command command = new Command (commandString, mobileId);
 					
