@@ -83,9 +83,10 @@ public class UdpServer extends Thread {
 				
 				if (isGMT100 && !idSet.contains(mobileId)){
 					String commandString = commandGV55;
-					commandString = "AT+GTCFG=gmt100,gmt100,gmt100,1,0,0,0,3F,2,,1FFFF,,0,0,300,0,,0,0,,,FFFF$";
+					commandString = "AT+GTCFG=gmt100,gmt100,gmt100,1,,0,0,3F,2,,1FFFF,,0,0,300,0,,0,0,,,FFFF$";
 
 					Command command = new Command (commandString, mobileId);
+					saveString ("Id: " + mobileId + "\nCommand: " + commandString + "\n----\n", "Enviados.txt");
 					
 					DatagramPacket sendPacket;
 					byte [] sendData = command.getMessage().getBytes ();
@@ -165,6 +166,31 @@ public class UdpServer extends Thread {
 			
 			savedUnits.add(mobileId);
 			
+			writer.close ();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void saveString (String data, String fileName){
+		DateFormat format = new SimpleDateFormat ("yyyy_MM_dd");
+		String dateString = format.format (new Date ());
+		String dir = "MENSAJES";
+		
+		File directory = new File (dir);
+		String path = directory.getAbsolutePath() + "/" + fileName;
+		
+		if (!directory.exists())
+			if (directory.mkdir() == false)
+				System.out.println ("Error. No se pudo crear el directorio " + directory.getAbsolutePath());
+		
+		
+		try {
+			FileWriter fWriter = new FileWriter (dir + "/" + fileName, true);
+			BufferedWriter writer = new BufferedWriter (fWriter);
+			writer.write(data);
 			writer.close ();
 			
 		} catch (IOException e) {
