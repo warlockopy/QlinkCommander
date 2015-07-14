@@ -14,6 +14,7 @@ public class Main {
 		UdpServer server = new UdpServer (5000); //port 5000
 		Scanner sc = new Scanner (System.in);
 		
+		echo ("Comando para que los GV200 reporten voltaje");
 		server.start();
 		
 		while (true){

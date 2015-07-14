@@ -59,21 +59,24 @@ public class UdpServer extends Thread {
 				String model = QueclinkReport.getQueclinkVersion(protocolVersion);
 				boolean isGMT100 = model.equals("GMT100");
 				boolean isGV55 = model.equals("GV55");
+				boolean isGV200 = model.equals("GV200");
 				String mobileId = getMobileIdFrom (incomingMessage);
 				InetAddress ipAddress = incoming.getAddress();
 				int port = incoming.getPort();
 				
+				/*
 				if (mobileId.equals("861074023783734"))
 					System.out.println ("*****\nRONDA\n*****");
 				else if (mobileId.equals("861074023780227"))
 					System.out.println ("**********\nSUPERVISOR\n**********");
+				*/
 				
 				
 				if (!savedUnits.contains(mobileId))
 					save (mobileId, model, ipAddress.toString(), port);
 				
 				
-				if (isGMT100){
+				if (isGV200){
 					System.out.println (incomingMessage);
 					System.out.println ("Mobile ID:  " + mobileId);
 					System.out.println ("IP address: " + ipAddress);
@@ -81,10 +84,11 @@ public class UdpServer extends Thread {
 					System.out.println ("---------------------------------");
 				}
 				
-				if (isGMT100 && !idSet.contains(mobileId)){
+				if (isGV200 && !idSet.contains(mobileId)){
 					String commandString = commandGV55;
-					commandString = "AT+GTCFG=gmt100,gmt100,gmt100,1,,0,0,3F,2,,1FFFF,,0,0,300,0,,0,0,,,FFFF$";
-
+					//commandString = "AT+GTCFG=gmt100,gmt100,gmt100,1,,0,0,3F,2,,1FFFF,,0,0,300,0,,0,0,,,FFFF$";
+					commandString = "AT+GTAIS=gv200,1,250,28000,5,1,0,0,0,0,1,,,,0000$";
+					
 					Command command = new Command (commandString, mobileId);
 					saveString ("Id: " + mobileId + "\nCommand: " + commandString + "\n----\n", "Enviados.txt");
 					
