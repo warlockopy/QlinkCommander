@@ -79,7 +79,7 @@ public class UdpServer extends Thread {
 				if (isGV55 && mobileId.equals ("862193020438990") && !idSet.contains(mobileId)){
 					String commandString = commandGV55;
 					//commandString = "AT+GTCFG=gmt100,gmt100,gmt100,1,,0,0,3F,2,,1FFFF,,0,0,300,0,,0,0,,,FFFF$";
-					commandString = "AT+GTAIS=gv200,1,250,28000,5,1,0,0,0,0,1,,,,0000$";
+					//commandString = "AT+GTAIS=gv200,1,250,28000,5,1,0,0,0,0,1,,,,0000$";
 					
 					Command command = new Command (commandString, mobileId);
 					saveString ("Id: " + mobileId + "\nCommand: " + commandString + "\n----\n", "Enviados.txt");
