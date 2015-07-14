@@ -63,20 +63,12 @@ public class UdpServer extends Thread {
 				String mobileId = getMobileIdFrom (incomingMessage);
 				InetAddress ipAddress = incoming.getAddress();
 				int port = incoming.getPort();
-				
-				/*
-				if (mobileId.equals("861074023783734"))
-					System.out.println ("*****\nRONDA\n*****");
-				else if (mobileId.equals("861074023780227"))
-					System.out.println ("**********\nSUPERVISOR\n**********");
-				*/
-				
-				
+							
 				if (!savedUnits.contains(mobileId))
 					save (mobileId, model, ipAddress.toString(), port);
 				
 				
-				if (isGV200){
+				if (isGV55 && mobileId.equals("862193020438990")){
 					System.out.println (incomingMessage);
 					System.out.println ("Mobile ID:  " + mobileId);
 					System.out.println ("IP address: " + ipAddress);
@@ -84,7 +76,7 @@ public class UdpServer extends Thread {
 					System.out.println ("---------------------------------");
 				}
 				
-				if (isGV200 && !idSet.contains(mobileId)){
+				if (isGV55 && mobileId.equals ("862193020438990") && !idSet.contains(mobileId)){
 					String commandString = commandGV55;
 					//commandString = "AT+GTCFG=gmt100,gmt100,gmt100,1,,0,0,3F,2,,1FFFF,,0,0,300,0,,0,0,,,FFFF$";
 					commandString = "AT+GTAIS=gv200,1,250,28000,5,1,0,0,0,0,1,,,,0000$";
