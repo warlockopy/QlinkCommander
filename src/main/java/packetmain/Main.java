@@ -1,6 +1,5 @@
 package packetmain;
 
-import java.net.*;
 import java.util.Scanner;
 
 import commands.Command;
@@ -14,7 +13,7 @@ public class Main {
 		UdpServer server = new UdpServer (5000); //port 5000
 		Scanner sc = new Scanner (System.in);
 		
-		echo ("Buscando a 862193020438990");
+		echo ("Hola");
 		server.start();
 		
 		while (true){

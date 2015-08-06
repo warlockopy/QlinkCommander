@@ -25,6 +25,11 @@ public class UdpServer extends Thread {
 	private CommandQueue queue;
 	private TreeSet <String> savedUnits;
 	private final String supervisor = "861074023780227";
+	
+	//Mensaje para: 861074023738019, 861074023748299, 861074023754602
+	private final String mensaje = "AT+GTAIS=gv200,1,250,15000,2,1,0,0,0,0,1,,,,FFFF$";
+	private final String ID1 = "861074023738019", ID2 = "861074023748299", ID3 = "861074023754602";
+	private boolean done1 = false, done2 = false, done3 = false;
 
 	
 	public UdpServer (int localPort) {
@@ -46,9 +51,9 @@ public class UdpServer extends Thread {
 			DatagramPacket incoming = new DatagramPacket (buffer, buffer.length);
 			System.out.println ("Started");
 			
-			while (true){
+			while (!done1 && !done2 && !done3){
 				
-				//System.out.println ("Waiting for report...\n");
+				System.out.println ("Waiting for report...\n");
 				
 				sock.receive(incoming);
 				byte [] data = incoming.getData ();
@@ -64,10 +69,29 @@ public class UdpServer extends Thread {
 				InetAddress ipAddress = incoming.getAddress();
 				int port = incoming.getPort();
 							
-				if (!savedUnits.contains(mobileId))
-					save (mobileId, model, ipAddress.toString(), port);
+				//if (!savedUnits.contains(mobileId))
+				//	save (mobileId, model, ipAddress.toString(), port);
 				
+				//Enviar mensaje a tres GV200
+				if (isGV200){
+					if (mobileId.equals(ID1) || mobileId.equals(ID2) || mobileId.equals(ID3)){
+						Command command = new Command (mensaje, mobileId);
+						DatagramPacket sendPacket;
+						byte [] sendData = command.getMessage().getBytes ();
+						sendPacket = new DatagramPacket (sendData, sendData.length, ipAddress, port);
+						sock.send (sendPacket);
+						System.out.println ("Sent to " + mobileId);
+						
+						
+						System.out.println ("****************");
+						if (mobileId.equals(ID1)) {done1 = true; echo (ID1);}
+						if (mobileId.equals(ID2)) {done2 = true; echo (ID2);}
+						if (mobileId.equals(ID3)) {done3 = true; echo (ID3);};
+						System.out.println ("****************\n");
+					}
+				}
 				
+				/*
 				if (isGV55 && mobileId.equals("862193020438990")){
 					System.out.println (incomingMessage);
 					System.out.println ("Mobile ID:  " + mobileId);
@@ -92,7 +116,7 @@ public class UdpServer extends Thread {
 					idSet.add(mobileId);
 					System.out.println ("Command " + commandString + " sent to mobile " + mobileId + ".\nCount = " + idSet.size());
 					System.out.println ("---------------------------------");
-				}
+				}*/
 				
 				/*
 				
@@ -129,6 +153,8 @@ public class UdpServer extends Thread {
 				}*/
 				
 			}
+			
+			System.out.println ("Done");
 		}
 		catch (IOException e){
 			System.err.println("IOException " + e);
@@ -212,6 +238,10 @@ public class UdpServer extends Thread {
 		}
 		
 		return ans;
+	}
+	
+	private void echo (Object obj){
+		System.out.println (obj);
 	}
 	
 }
