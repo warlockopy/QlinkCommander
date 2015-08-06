@@ -51,7 +51,7 @@ public class UdpServer extends Thread {
 			DatagramPacket incoming = new DatagramPacket (buffer, buffer.length);
 			System.out.println ("Started");
 			
-			while (!done1 && !done2 && !done3){
+			while (!done1 || !done2 || !done3){
 				
 				System.out.println ("Waiting for report...\n");
 				
@@ -68,6 +68,8 @@ public class UdpServer extends Thread {
 				String mobileId = getMobileIdFrom (incomingMessage);
 				InetAddress ipAddress = incoming.getAddress();
 				int port = incoming.getPort();
+				
+				System.out.println ("Report from " + mobileId + " (" + model + ")");
 							
 				//if (!savedUnits.contains(mobileId))
 				//	save (mobileId, model, ipAddress.toString(), port);
@@ -82,14 +84,17 @@ public class UdpServer extends Thread {
 						sock.send (sendPacket);
 						System.out.println ("Sent to " + mobileId);
 						
-						
-						System.out.println ("****************");
-						if (mobileId.equals(ID1)) {done1 = true; echo (ID1);}
-						if (mobileId.equals(ID2)) {done2 = true; echo (ID2);}
-						if (mobileId.equals(ID3)) {done3 = true; echo (ID3);};
-						System.out.println ("****************\n");
+						if (mobileId.equals(ID1)) {done1 = true; }
+						if (mobileId.equals(ID2)) {done2 = true; }
+						if (mobileId.equals(ID3)) {done3 = true; };
 					}
 				}
+				
+				System.out.println ("****************");
+				if (mobileId.equals(ID1)) { echo (ID1); }
+				if (mobileId.equals(ID2)) { echo (ID2); }
+				if (mobileId.equals(ID3)) { echo (ID3); };
+				System.out.println ("****************\n");
 				
 				/*
 				if (isGV55 && mobileId.equals("862193020438990")){
