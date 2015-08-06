@@ -91,9 +91,9 @@ public class UdpServer extends Thread {
 				}
 				
 				System.out.println ("****************");
-				if (mobileId.equals(ID1)) { echo (ID1); }
-				if (mobileId.equals(ID2)) { echo (ID2); }
-				if (mobileId.equals(ID3)) { echo (ID3); };
+				if (done1) { echo (ID1); }
+				if (done2) { echo (ID2); }
+				if (done3) { echo (ID3); };
 				System.out.println ("****************\n");
 				
 				/*
